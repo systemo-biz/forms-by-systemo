@@ -7,28 +7,26 @@
  */
  
  // Register Custom Post Type
-function custom_post_type() {
+function cp_post_type() {
 
 	$labels = array(
-		'name'                => 'Сообщения',
-		'singular_name'       => 'Сообщение',
-		'menu_name'           => 'Post Type',
-		'parent_item_colon'   => 'Parent Item:',
-		'all_items'           => 'All Items',
-		'view_item'           => 'View Item',
-		'add_new_item'        => 'Add New Item',
-		'add_new'             => 'Add New',
-		'edit_item'           => 'Edit Item',
-		'update_item'         => 'Update Item',
-		'search_items'        => 'Search Item',
-		'not_found'           => 'Not found',
-		'not_found_in_trash'  => 'Not found in Trash',
+		'name'                => _x( 'Сообщения', 'Post Type General Name', 'text_domain' ),
+		'singular_name'       => _x( 'Сообщение', 'Post Type Singular Name', 'text_domain' ),
+		'menu_name'           => __( 'Сообщения', 'text_domain' ),
+		'parent_item_colon'   => __( 'Parent Item:', 'text_domain' ),
+		'all_items'           => __( 'All Items', 'text_domain' ),
+		'view_item'           => __( 'View Item', 'text_domain' ),
+		'add_new_item'        => __( 'Add New Item', 'text_domain' ),
+		'add_new'             => __( 'Add New', 'text_domain' ),
+		'edit_item'           => __( 'Edit Item', 'text_domain' ),
+		'update_item'         => __( 'Update Item', 'text_domain' ),
+		'search_items'        => __( 'Search Item', 'text_domain' ),
+		'not_found'           => __( 'Not found', 'text_domain' ),
+		'not_found_in_trash'  => __( 'Not found in Trash', 'text_domain' ),
 	);
 	$args = array(
-		'label'               => 'cp_message',
-		'description'         => 'Сообщения из формы',
 		'labels'              => $labels,
-		'supports'            => array( ),
+		'supports'            => array( 'title', 'editor', 'author', 'comments', 'custom-fields', 'page-attributes', 'post-formats', ),
 		'taxonomies'          => array( 'messages' ),
 		'hierarchical'        => false,
 		'public'              => true,
@@ -48,49 +46,104 @@ function custom_post_type() {
 }
 
 // Hook into the 'init' action
-add_action( 'init', 'custom_post_type', 0 );
+add_action( 'init', 'cp_post_type', 0 );
  
  
- 
+ ////// шорт код вызова формы ++ обработчик данных из формы
  add_shortcode( 'form-cp', 'cpform_func' );
  
  function cpform_func( $cp_atts, $content){
 	 
-	 if(isset($_REQUEST['data_cp'])){
+	 ob_start();
 	 
- 		$cp_array = $_REQUEST['data_cp'];
-
-		foreach($cp_array as $e){
-			
-				echo $e.'<br>';
-			
-			}
-
-	 } else {
-	 
-	ob_start(); 
- 		$cp_atts = shortcode_atts( array(
+	 $cp_atts = shortcode_atts( array(
 		'method'		 => '',
+		'titlepost'		 => '',
+		'messagesend'    => 'email',
 		), $cp_atts, 'form-cp' );
 	
 	$cpmethod = $cp_atts['method'];
 	
-	?>
+	$cptitlepost = $cp_atts['titlepost'];
+	
+	$cpmessagesend = $cp_atts['messagesend'];
+	
+	if(isset($_REQUEST['data_cp'])){
+	
+		$cp_array = $_REQUEST['data_cp'];
+
+		foreach($cp_array as $key => $e){		
+			
+			if(empty($e)) return 'Не все поля заполнены!';
+			
+			if($key == $cptitlepost){
+				
+				$cp_verificated_key = $key;
+				$cp_verificated_e = $e;
+		
+			}
+		}
+		
+		if(empty($cp_verificated_key)) $cp_verificated_key = '';
+		
+		if(empty($cp_verificated_e)) $cp_verificated_e = '';
+	
+		/// не забыдь вызов фунциии
+	
+		if(verefication_cp($cp_verificated_key, $cp_verificated_e)){
+		
+		 // Создаем массив
+ 		 	$cp_post = array(
+				'post_title' => 'Заголовок записи',
+				'post_type' => 'cp_message',
+				'post_content' => 'Здесь должен быть контент (текст) записи.',
+				'post_status' => 'draft',
+				'post_author' => 1,
+ 			 );
+
+		// Вставляем данные в БД
+ 			$post_id = wp_insert_post( $cp_post );
+
+			foreach($cp_array as $key => $e){
+			
+				add_post_meta($post_id, $key, $e);
+			
+				if($key == $cptitlepost){
+				// Создаем массив данных
+					$cp_uppost = array();
+					$cp_uppost['ID'] = $post_id;
+					$cp_uppost['post_title'] = $e;
+				
+				// Обновляем данные в БД
+  					wp_update_post( $cp_uppost );
+		
+			}
+		}
+		
+		
+		
+	} else {
+		
+		echo 'все норм';
+		}
+		
+		
+
+	 } else {
+	  ?>
     
-    <form method="<?php echo $cpmethod; ?>" >
-    <?php echo do_shortcode($content); ?>
+    	<form method="<?php echo $cpmethod; ?>" >
+    	<?php echo do_shortcode($content); ?>
     
-   </form>
+   		</form>
     
 	<?php
- 
-	 $cp_ret = ob_get_contents();
+	 	}
+	$cp_ret = ob_get_contents();
     ob_end_clean();
     return $cp_ret;
-	
-	 }
  }
-
+///////////////////////////////////////////// шорткод input'а
  add_shortcode( 'input-cp', 'cpcallbackform_func' );
  
  function cpcallbackform_func( $cp_atts ){
@@ -102,6 +155,7 @@ add_action( 'init', 'custom_post_type', 0 );
 		'id'            		   	  => '',
 		'label'            		      => '',
 		'value'            		      => '',
+		'placeholder'                 => '',
 	  ), $cp_atts, 'input-cp' );
 	
 	$cptype = $cp_atts['type'];
@@ -116,21 +170,54 @@ add_action( 'init', 'custom_post_type', 0 );
 	
 	$cpvalue = $cp_atts['value'];
 	
+	$cpplaceholder = $cp_atts['placeholder'];
+	
 	?>
         
     			<div class="input_cp <?php if(!empty($cpname)){  echo $cpname;  } ?>"><?php if(!empty($cplabelname)){ ?><label for="<?php echo $cpid; ?>"><?php echo $cplabelname; ?></label>
      <?php } ?>
             	
-    <input type="<?php echo $cptype; ?>" 
-	<?php if(!empty($cpvalue)){ ?> value="<?php echo $cpvalue; ?>" <?php } ?> 
-	<?php if(!empty($cpname)){ ?> name="data_cp[<?php echo $cpname; ?>]" <?php } ?> 
-	<?php if(!empty($cpclass)){ ?> class="<?php echo $cpclass; ?>" <?php } ?> 
-	<?php if(!empty($cplabelname)){ ?> id="<?php echo $cpid; ?>" <?php } ?>
-    ></div>
+    <input 
+		<?php if($cptype == 'tel'){ ?>type="<?php echo $cptype; ?>" pattern="8[0-9]{10}" <?php } else{ ?>
+		
+		type="<?php echo $cptype; ?>"<?php } ?>
+        
+		<?php if(!empty($cpvalue)){ ?> value="<?php echo $cpvalue; ?>" <?php } ?> 
+        
+		<?php if($cptype != 'submit'){ ?> name="data_cp[<?php echo $cpname; ?>]" <?php } ?> 
+        
+		<?php if(!empty($cpclass)){ ?> class="<?php echo $cpclass; ?>" <?php } ?> 
+        
+		<?php if(!empty($cplabelname)){ ?> id="<?php echo $cpid; ?>" <?php } ?>
+         
+        <?php if(!empty($cpplaceholder)){ ?> placeholder="<?php echo $cpplaceholder; ?>" <?php } ?> ></div>
     
     <?php
   
  	$cp_ret = ob_get_contents();
     ob_end_clean();
     return $cp_ret;
+ }
+ 
+ /// функция проверки существования записей по ключу
+ 
+ function verefication_cp($cp_mkey, $cp_mvalue) {
+	 
+	if(empty($cp_mvalue)) return true;
+	 
+	$cp_args = array( 
+			'meta_key'        => $cp_mkey,
+			'meta_value'      => $cp_mvalue,
+			'post_type'       => 'cp_message', 
+			'post_status'     => 'any'
+		);
+	$cp_postsv = get_posts( $cp_args ); 
+	
+	if(!empty($cp_postsv)) {
+		return false;
+	}else{
+		return true;
+	}
+		
+	 
  }
