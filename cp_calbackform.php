@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 /**
  * Plugin Name: CasePress Calback Form
  * Description: filter post
@@ -6,7 +6,18 @@
  * Author: http://casepress.org
  */
  
- // Register Custom Post Type
+ function wpb_adding_scripts() {
+
+wp_register_script('jquerymask', plugins_url('js/jquery.mask.min.js', __FILE__), array('jquery'),'1.1', true);
+
+wp_enqueue_script('jquerymask');
+
+}
+
+add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' ); 
+
+ 
+//регистрируем новый тип поста
 function cp_post_type() {
 
 	$labels = array(
@@ -45,18 +56,14 @@ function cp_post_type() {
 
 }
 
-// Hook into the 'init' action
 add_action( 'init', 'cp_post_type', 0 );
- 
- 
- ////// шорт код вызова формы ++ обработчик данных из формы
+
+////// шорт код вызова формы ++ обработчик данных из формы
  add_shortcode( 'form-cp', 'cpform_func' );
  
  function cpform_func( $cp_atts, $content){
 	 
-	 ob_start();
-	 
-	 $cp_atts = shortcode_atts( array(
+	  $cp_atts = shortcode_atts( array(
 		'method'		 => '',
 		'titlepost'		 => '',
 		'messagesend'    => 'email',
@@ -68,13 +75,34 @@ add_action( 'init', 'cp_post_type', 0 );
 	
 	$cpmessagesend = $cp_atts['messagesend'];
 	
-	if(isset($_REQUEST['data_cp'])){
+	 ob_start(); ?>
+     
 	
-		$cp_array = $_REQUEST['data_cp'];
+		<form method="<?php echo $cpmethod; ?>" >
+    		<?php echo do_shortcode($content); ?>
+    
+   		</form>
+        
+          <script>
+       jQuery(document).ready(function(){
+  jQuery('.phone').mask('0000-0000');
+           });
+                </script>
+    
+	<?php
+	 	
+	$cp_ret = ob_get_contents();
+    ob_end_clean();
+   /// return $cp_ret;   вызов формы
+
+	// проверяем пустая ли data_cp
+	if(isset($_REQUEST['data_cp'])){
+		
+		$cp_array = $_REQUEST['data_cp']; // если не пустая то записываем значения для  проверки существованя 
 
 		foreach($cp_array as $key => $e){		
 			
-			if(empty($e)) return 'Не все поля заполнены!';
+			if(empty($e)) return $cp_ret; //если хоть одно поле пустое, запись не будет сохранена в БД
 			
 			if($key == $cptitlepost){
 				
@@ -83,16 +111,16 @@ add_action( 'init', 'cp_post_type', 0 );
 		
 			}
 		}
-		
-		if(empty($cp_verificated_key)) $cp_verificated_key = '';
+				
+ 		if(empty($cp_verificated_key)) $cp_verificated_key = '';
 		
 		if(empty($cp_verificated_e)) $cp_verificated_e = '';
 	
-		/// не забыдь вызов фунциии
+		/// не забыть вызов фунциии
 	
 		if(verefication_cp($cp_verificated_key, $cp_verificated_e)){
-		
-		 // Создаем массив
+			
+			// Создаем массив
  		 	$cp_post = array(
 				'post_title' => 'Заголовок записи',
 				'post_type' => 'cp_message',
@@ -117,33 +145,18 @@ add_action( 'init', 'cp_post_type', 0 );
 				// Обновляем данные в БД
   					wp_update_post( $cp_uppost );
 		
+				}
 			}
 		}
-		
-		
-		
-	} else {
-		
-		echo 'все норм';
-		}
-		
-		
-
-	 } else {
-	  ?>
-    
-    	<form method="<?php echo $cpmethod; ?>" >
-    	<?php echo do_shortcode($content); ?>
-    
-   		</form>
-    
-	<?php
-	 	}
-	$cp_ret = ob_get_contents();
-    ob_end_clean();
-    return $cp_ret;
+	}
+	
+	
+	return $cp_ret;
+	
  }
-///////////////////////////////////////////// шорткод input'а
+ 
+ 
+ ///////////////////////////////////////////// шорткод input'а
  add_shortcode( 'input-cp', 'cpcallbackform_func' );
  
  function cpcallbackform_func( $cp_atts ){
@@ -156,6 +169,7 @@ add_action( 'init', 'cp_post_type', 0 );
 		'label'            		      => '',
 		'value'            		      => '',
 		'placeholder'                 => '',
+		'required'                    => false,
 	  ), $cp_atts, 'input-cp' );
 	
 	$cptype = $cp_atts['type'];
@@ -172,15 +186,16 @@ add_action( 'init', 'cp_post_type', 0 );
 	
 	$cpplaceholder = $cp_atts['placeholder'];
 	
+	$cprequired = $cp_atts['required'];
+	
 	?>
         
-    			<div class="input_cp <?php if(!empty($cpname)){  echo $cpname;  } ?>"><?php if(!empty($cplabelname)){ ?><label for="<?php echo $cpid; ?>"><?php echo $cplabelname; ?></label>
+    <div class="input_cp <?php if(!empty($cpname)){  echo $cpname;  } ?>"><?php if(!empty($cplabelname)){ ?><label for="<?php echo $cpid; ?>"><?php echo $cplabelname; ?></label>
      <?php } ?>
             	
     <input 
-		<?php if($cptype == 'tel'){ ?>type="<?php echo $cptype; ?>" pattern="8[0-9]{10}" <?php } else{ ?>
 		
-		type="<?php echo $cptype; ?>"<?php } ?>
+		<?php if(!empty($cptype)){ ?> type="<?php echo $cptype; ?>" <?php } ?> 
         
 		<?php if(!empty($cpvalue)){ ?> value="<?php echo $cpvalue; ?>" <?php } ?> 
         
@@ -190,7 +205,9 @@ add_action( 'init', 'cp_post_type', 0 );
         
 		<?php if(!empty($cplabelname)){ ?> id="<?php echo $cpid; ?>" <?php } ?>
          
-        <?php if(!empty($cpplaceholder)){ ?> placeholder="<?php echo $cpplaceholder; ?>" <?php } ?> ></div>
+        <?php if(!empty($cpplaceholder)){ ?> placeholder="<?php echo $cpplaceholder; ?>" <?php } ?>
+        
+        <?php if($cprequired == 'true'){ ?> required="required" <?php } ?> ></div>
     
     <?php
   
