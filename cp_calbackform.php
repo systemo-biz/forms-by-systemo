@@ -1,7 +1,7 @@
 ﻿<?php 
 /**
  * Plugin Name: CasePress Calback Form
- * Description: filter post
+ * Description: Calback Form
  * Version: 1.0
  * Author: http://casepress.org
  */
@@ -85,8 +85,15 @@ add_action( 'init', 'cp_post_type', 0 );
         
           <script>
        jQuery(document).ready(function(){
-  jQuery('.phone').mask('0000-0000');
+  jQuery('.tel').mask('+9(000)000 00-00');
+  
+  
+  jQuery("#customer_phone").click(function () {
+      jQuery("#customer_phone").attr("value", "+7");
+    });
            });
+		
+  
                 </script>
     
 	<?php
