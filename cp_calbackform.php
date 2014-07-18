@@ -17,6 +17,8 @@ wp_enqueue_script('jquerymask');
 add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' ); 
 
  
+//////////// CasePress форма
+
 //регистрируем новый тип поста
 function cp_post_type() {
 
@@ -84,8 +86,8 @@ add_action( 'init', 'cp_post_type', 0 );
    		</form>
         
           <script>
-       jQuery(document).ready(function(){
-  jQuery('.tel').mask('+9(000)000 00-00');
+      $(document).ready(function(){
+  $('.tel').mask('+9(000)000 00-00');
   
   
   jQuery("#customer_phone").click(function () {
@@ -101,6 +103,12 @@ add_action( 'init', 'cp_post_type', 0 );
 	$cp_ret = ob_get_contents();
     ob_end_clean();
    /// return $cp_ret;   вызов формы
+   
+    if(isset($_GET['activ'])){
+		$cp_activ = $_GET['activ'];
+		activmail_cp($cp_activ);
+		
+	}
 
 	// проверяем пустая ли data_cp
 	if(isset($_REQUEST['data_cp'])){
@@ -123,7 +131,7 @@ add_action( 'init', 'cp_post_type', 0 );
 		
 		if(empty($cp_verificated_e)) $cp_verificated_e = '';
 	
-		/// не забыть вызов фунциии
+		//проверка на существование записи
 	
 		if(verefication_cp($cp_verificated_key, $cp_verificated_e)){
 			
@@ -144,16 +152,28 @@ add_action( 'init', 'cp_post_type', 0 );
 				add_post_meta($post_id, $key, $e);
 			
 				if($key == $cptitlepost){
+					
+				//Создаем хеш для проверки Email'a письмом
+					$cp_hash = hash('ripemd160', $e);
+					add_post_meta($post_id, 'cp_hash', $cp_hash);
+					
+				// убираем маску с телефона и обновляем мету и записываем его в титле поста
+					
+					$cp_e = preg_replace('/[^0-9]/', '', $e);
+					update_post_meta($post_id, $cptitlepost, $cp_e);
 				// Создаем массив данных
 					$cp_uppost = array();
 					$cp_uppost['ID'] = $post_id;
-					$cp_uppost['post_title'] = $e;
+					$cp_uppost['post_title'] = $cp_e;
 				
 				// Обновляем данные в БД
   					wp_update_post( $cp_uppost );
 		
 				}
 			}
+			add_post_meta($post_id, 'cp_verificate', '0');
+			$cp_email = get_post_meta($post_id, 'email', true);
+			wp_mail($cp_email, 'club-lord.ru', 'Здравствуйте, подтвердите ваш Email по ссылке '.$_SERVER["REQUEST_URI"].'?activ='.$cp_hash);
 		}
 	}
 	
@@ -210,7 +230,7 @@ add_action( 'init', 'cp_post_type', 0 );
         
 		<?php if(!empty($cpclass)){ ?> class="<?php echo $cpclass; ?>" <?php } ?> 
         
-		<?php if(!empty($cplabelname)){ ?> id="<?php echo $cpid; ?>" <?php } ?>
+		<?php if(!empty($cpid)){ ?> id="<?php echo $cpid; ?>" <?php } ?>
          
         <?php if(!empty($cpplaceholder)){ ?> placeholder="<?php echo $cpplaceholder; ?>" <?php } ?>
         
@@ -241,6 +261,29 @@ add_action( 'init', 'cp_post_type', 0 );
 		return false;
 	}else{
 		return true;
+	}
+		
+	 
+ }
+ 
+ /// Функция подтверждения email по ссылке из письма
+ 
+ function activmail_cp($cp_activ) {
+	 
+	$cp_args = array( 
+			'meta_key'        => 'cp_hash',
+			'meta_value'      => $cp_activ,
+			'post_type'       => 'cp_message', 
+			'post_status'     => 'any'
+		);
+	$cp_postsv = get_posts( $cp_args ); 
+	
+	if(!empty($cp_postsv)) {
+		foreach( $cp_postsv as $post ){
+			
+			update_post_meta($post->ID, 'cp_verificate', '1');
+		}
+		
 	}
 		
 	 
