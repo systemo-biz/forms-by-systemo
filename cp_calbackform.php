@@ -8,9 +8,9 @@
  
  function wpb_adding_scripts() {
 
-wp_register_script('jquerymask', plugins_url('js/jquery.mask.min.js', __FILE__), array('jquery'),'1.1', true);
+//wp_register_script('jquerymask', plugins_url('js/jquery.mask.min.js', __FILE__), array('jquery'),'1.1', true);
 
-wp_enqueue_script('jquerymask');
+//wp_enqueue_script('jquerymask');
 
 }
 
