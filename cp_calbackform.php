@@ -16,22 +16,25 @@ add_shortcode( 'form-cp', 'cpform_func' );
  
 function cpform_func( $cp_atts, $content){
 	 
-	  extract(shortcode_atts( array(
+	extract(shortcode_atts( array(
 		'method'		=> 'post', // get or post
 		'titlepost'		=> '',
 		'messagesend'   => 'post',
 		'name_form'		=> 'Сообщение с сайта',
 		'style'			=> '',
-		), $cp_atts, 'form-cp' ));
+		'email_to'			=> true,
+	), $cp_atts, 'form-cp' ));
+
+  	if($email_to) $email_to = get_bloginfo('admin_email');;
 		
  	ob_start(); 
  	?>
-     
-	
+
 	<div class="form_wrapper_external_cp" style='<?php echo $style; ?>'>
 		<form method="<?php echo $method; ?>" >
 			<?php echo do_shortcode($content); ?>
 			<input type="hidden" value="<?php echo $name_form ?>" name="meta_data_form_cp[name_form]">
+			<input type="hidden" value="<?php echo $email_to ?>" name="meta_data_form_cp[email_to]">
 		</form>
 	</div>
     
@@ -162,50 +165,50 @@ add_shortcode( 'textarea-cp', 'textarea_callback_cp' );
 add_action('init', 'add_message_to_posts');
 function add_message_to_posts(){
 
-// проверяем пустая ли data_cp
-if(empty($_REQUEST['data_form_cp'])) return;
-	
-$data_form = $_REQUEST['data_form_cp']; // если не пустая то записываем значения для  проверки существованя
-$meta_data_form = $_REQUEST['meta_data_form_cp']; // если не пустая то записываем значения для  проверки существованя
+	// проверяем пустая ли data_cp
+	if(empty($_REQUEST['data_form_cp'])) return;
+		
+	$data_form = $_REQUEST['data_form_cp']; // если не пустая то записываем значения для  проверки существованя
+	$meta_data_form = $_REQUEST['meta_data_form_cp']; // если не пустая то записываем значения для  проверки существованя
 
-error_log(print_r($dara_form, true));
-// Создаем массив
-$cp_post = array(
-	'post_title' => $meta_data_form['name_form'],
-	'post_type' => 'message_cp',
-	'post_content' => print_r($data_form, true),
-	'post_author' => 1,
-	);
+	error_log(print_r($dara_form, true));
+	// Создаем массив
+	$cp_post = array(
+		'post_title' => $meta_data_form['name_form'],
+		'post_type' => 'message_cp',
+		'post_content' => print_r($data_form, true),
+		'post_author' => 1,
+		);
 
-// Вставляем данные в БД
-$post_id = wp_insert_post( $cp_post );
-
-
-//Записываем меты
-
-foreach($meta_data_form as $key => $value):
-	add_post_meta($post_id, 'meta_' . $key, $value);
-endforeach;
-
-foreach($data_form as $key => $value):
-	add_post_meta($post_id, $key, $value);
-	$conten_data .= "
-		<div>
-			<div><strong>" . get_post_meta($post_id, 'meta_'.$key, true) . "</strong></div>".
-			"<div>" . get_post_meta($post_id, $key, true) . "</div>
-		</div>
-		<hr/>";
-endforeach;
+	// Вставляем данные в БД
+	$post_id = wp_insert_post( $cp_post );
 
 
+	//Записываем меты
+
+	foreach($meta_data_form as $key => $value):
+		add_post_meta($post_id, 'meta_' . $key, $value);
+	endforeach;
+
+	foreach($data_form as $key => $value):
+		add_post_meta($post_id, $key, $value);
+		$conten_data .= "
+			<div>
+				<div><strong>" . get_post_meta($post_id, 'meta_'.$key, true) . "</strong></div>".
+				"<div>" . get_post_meta($post_id, $key, true) . "</div>
+			</div>
+			<hr/>";
+	endforeach;
 
 
-$post_data = array(
-	'ID' => $post_id, 
-	'post_content' => $conten_data,
-	);
 
-wp_update_post( $post_data );
+
+	$post_data = array(
+		'ID' => $post_id, 
+		'post_content' => $conten_data,
+		);
+
+	wp_update_post( $post_data );
 
 }
 

@@ -11,8 +11,11 @@ function check_new_msg_and_send_callback() {
 	$posts = get_posts('post_type=message_cp&post_status=draft');
 
 	foreach ($posts as $msg) {
+
+		$email = get_post_meta($msg->ID, 'meta_email_to', true);
+
 		$mailcheck = wp_mail( 
-		'a@casepress.org', 
+		$email, 
 		$msg->post_title, 
 		$msg->post_content
 		);
