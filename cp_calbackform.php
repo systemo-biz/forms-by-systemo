@@ -9,7 +9,46 @@
 
  include_once('includes/emailer.php');
 
+/*
+Получает код для защиты формы от спама
 
+Если произошел клик по кнопке, то считаем что это человек и заполняем скрытое поле.
+
+Затем функция проверит наличие этого поля и если оно есть, то пропускаем, иначе помечаем как спам.
+*/
+function get_spam_protect_html($type_spam_protect){
+
+	if(empty($type_spam_protect)) return;
+
+	ob_start();
+	?>
+	<input type="hidden" class="spam_protect" name="meta_data_form_cp[spam_protect]">
+	<script type="text/javascript">
+		(function($) {
+			$("input[type='submit']").click(function () {
+      			$('.spam_protect').val('hs');
+    		});
+		})(jQuery);
+	</script>
+	<?php
+	$html = ob_get_contents();
+	ob_end_clean();
+
+	return $html;
+}
+
+add_action('added_post_meta', 'check_spam_form_cp', 10, 4);
+add_action('updated_post_meta', 'check_spam_form_cp', 10, 4);
+function check_spam_form_cp($mid, $object_id, $meta_key, $meta_value) {
+	
+	//проверяем чтобы это была мета которая содержит отметку о спаме
+	if($meta_key != 'meta_spam_protect') return;
+
+	if($meta_value != 'hs') {
+		wp_trash_post($object_id);
+	}
+
+}
 
 ////// шорт код вызова формы + обработчик данных из формы
 add_shortcode( 'form-cp', 'cpform_func' );
@@ -22,11 +61,14 @@ function cpform_func( $cp_atts, $content){
 		'messagesend'   => 'post',
 		'name_form'		=> 'Сообщение с сайта',
 		'style'			=> '',
-		'email_to'			=> true,
+		'email_to'		=> true,
+		'spam_protect'	=> '',
 	), $cp_atts, 'form-cp' ));
 
   	if($email_to) $email_to = get_bloginfo('admin_email');;
-		
+	
+  	$spam_protect_html = get_spam_protect_html($spam_protect);
+
  	ob_start(); 
  	?>
 
@@ -35,6 +77,7 @@ function cpform_func( $cp_atts, $content){
 			<?php echo do_shortcode($content); ?>
 			<input type="hidden" value="<?php echo $name_form ?>" name="meta_data_form_cp[name_form]">
 			<input type="hidden" value="<?php echo $email_to ?>" name="meta_data_form_cp[email_to]">
+			<?php echo $spam_protect_html; ?>
 		</form>
 	</div>
     
