@@ -4,8 +4,20 @@ Forms-for-WP-by-CasePress
 Плагин позволяет генерировать форму за счет шорткодов. Сохраняя данные в посты типа Сообщение и отправляя на эл почту.
 
 
-# Examples
-## Example #1 - Simple form
+# Шорткоды
+## [form_cp]
+Шорткод, который генерирует обертку формы. Включает в себя типовые атрибуты тега form в HTML
+Внутрь этого шорткода помещаются шорткоды полей.
+
+Дополнительные атрибуты:
+spam_protect=1 - включает защиту от спама по клику
+form_name='Имя формы' - имя формы, которое затем идет в заголове сообщений, как при сохранении в консоли, так и при отправлении на почту
+
+## [input-cp]
+Шорткод поля ввода. Аналогичен тегу input в HTML.
+
+# Примеры
+## Пример #1 - Простая форма и метод GET
 
 [form-cp method="GET"]
 
@@ -16,9 +28,9 @@ Forms-for-WP-by-CasePress
 [/form-cp]
 
 
-## Example #2 - form for landing page
+## Пример #2 - форма обратной связи
 
-[form-cp method="post" name_form="Сайт под ключ - заявка" style="width: 300px; padding: 11px;background-color: darkcyan;"]
+[form-cp name_form='Сайт под ключ - заявка' spam_protect=1]
 
 [input-cp type=text name="name" placeholder="Имя" meta="Имя"]
 
