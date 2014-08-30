@@ -16,7 +16,9 @@
 add_shortcode( 'form-cp', 'cpform_func' );
  
 function cpform_func( $cp_atts, $content){
-	 
+	
+	if(isset($_REQUEST['data_form_cp'])) return apply_filters('msg_senf_form_cp', '<p>Сообщение отправлено.</p>');
+
 	extract(shortcode_atts( array(
 		'method'		=> 'post', // get or post
 		'titlepost'		=> '',
