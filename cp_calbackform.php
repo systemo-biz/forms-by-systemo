@@ -1,10 +1,12 @@
 <?php 
-/**
- * Plugin Name: Forms for WordPress by CasePress
- * Description: Calback Form
- * Version: 1.0
- * Author: http://casepress.org
- */
+/*
+Plugin Name: Forms for WordPress by CasePress
+Description: Calback Form
+Version: 20141021.2
+GitHub Plugin https://github.com/casepress-studio/Forms-for-WP-by-CasePress
+GitHub Branch: master
+Author: http://casepress.org
+*/
 
 
  include_once('includes/emailer.php');
@@ -249,14 +251,15 @@ function form_message_add_post_type_cp() {
 		'public'              => false,
 		'show_ui'             => true,
 		'show_in_menu'        => true,
-		'show_in_nav_menus'   => true,
-		'show_in_admin_bar'   => true,
+		'show_in_nav_menus'   => false,
+		'show_in_admin_bar'   => false,
 		'menu_position'       => 55,
 		'can_export'          => true,
-		'has_archive'         => true,
-		'exclude_from_search' => false,
-		'publicly_queryable'  => true,
-		'capability_type'     => 'page',
+		'has_archive'         => false,
+		'query_var'			=> false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'capability_type'     => 'post',
 	);
 	register_post_type( 'message_cp', $args );
 
