@@ -3,7 +3,7 @@
 Plugin Name: Forms for WordPress by CasePress
 Description: Calback Form
 Version: 20141021.2
-GitHub Plugin https://github.com/casepress-studio/Forms-for-WP-by-CasePress
+GitHub Plugin https://github.com/systemo-biz/forms-cp
 GitHub Branch: master
 Author: http://casepress.org
 */
