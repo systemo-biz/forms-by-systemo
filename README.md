@@ -36,7 +36,7 @@ form_name='Имя формы' - имя формы, которое затем и�
 
 [input-cp type=text name="tel" placeholder="Телефон" meta="Телефон"]
 
-[input-cp type=email name="email" placeholder="Электронная почта" meta="Электронная почта"]
+[input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта"]
 
 [textarea-cp placeholder=Комментарий name="comment" meta="Комментарий"]
 
