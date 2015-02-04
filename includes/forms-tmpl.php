@@ -4,7 +4,7 @@
 function cp_callback_activation() { //hook for components that require activation
     add_post_type_form_tmpl_s();
     registration_form_tag_s_taxonomy();
-    flush_rewrite_rules(); //reset rewrite rules to open the URL as follows
+    //flush_rewrite_rules(); //reset rewrite rules to open the URL as follows
 }
 
 //регистрируем новый тип поста для хранения шаблонов форм
@@ -78,9 +78,6 @@ function registration_form_tag_s_taxonomy(){
 
 }
 
-
-
-
 //отключение tiny mce
 add_filter( 'admin_footer', 'disable_tiny_mce', 99);
 
@@ -132,20 +129,17 @@ function form_s_shortcode( $atts ){
     ), $atts ) );
 
     $post = get_post($id);
-    //echo '<pre>';print_r($post);echo '</pre>';
+
     if ( is_object($post) && $post->post_type == 'form_tmpl_s'){
-        //echo '<input type="hidden" value="'.$post->ID.'" name="meta_data_form_cp[form_id_post]">';
-        //global $post_id_for_taxonomy;
+
         $post_id_for_taxonomy = $post->post_title;
         $GLOBALS['post_id_for_taxonomy'] = $post_id_for_taxonomy;
         echo do_shortcode($post->post_content);
-        //$post_id_for_taxonomy = $post->ID;
 
-        //echo $_POST['post_id_for_taxonomy'];
-        //echo "<pre>";print_r ($post);echo "</pre>";
     }else{
         echo 'указан неверный ID шаблона формы';
     }
+
     $ret = ob_get_contents();
     ob_end_clean();
     return $ret;

@@ -57,7 +57,6 @@ function cpform_func( $cp_atts, $content){
 				<input type="hidden" value="<?php echo $GLOBALS['post_id_for_taxonomy'] ?>" name="meta_data_form_cp[parent_post_id]">
 			<?php endif;?>
 			<?php echo $spam_protect_html; ?>
-
 		</form>
 	</div>
     
@@ -209,9 +208,9 @@ function add_message_to_posts(){
 
 	// Присваиваем id поста-шаблона формы как термин таксономии текущему посту-сообщению
 	if (defined ("forms_tmpl_include") && forms_tmpl_include == 1) {
-		wp_set_object_terms($post_id, $_REQUEST['meta_data_form_cp']['parent_post_id'], 'form_tag_s', true);
+		$parent_post_name = strval($_REQUEST['meta_data_form_cp']['parent_post_id']);
+		wp_set_object_terms($post_id, $parent_post_name, 'form_tag_s', true);
 	}
-
 
 	//Записываем меты
 	foreach($meta_data_form as $key => $value):
@@ -228,7 +227,6 @@ function add_message_to_posts(){
 			<hr/>";
 	endforeach;
 
-
 	$post_data = array(
 		'ID' => $post_id, 
 		'post_content' => $content_data,
@@ -237,7 +235,6 @@ function add_message_to_posts(){
 	wp_update_post( $post_data );
 
 }
-
 
 //регистрируем новый тип поста
 add_action( 'init', 'form_message_add_post_type_cp' );
@@ -305,5 +302,3 @@ register_deactivation_hook(__FILE__, 'deactivation_form_emailer_cp');
 function deactivation_form_emailer_cp() {
 	wp_clear_scheduled_hook('check_new_msg_and_send');
 }
-
-
