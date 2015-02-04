@@ -4,7 +4,7 @@
 function cp_callback_activation() { //hook for components that require activation
     add_post_type_form_tmpl_s();
     registration_form_tag_s_taxonomy();
-    //flush_rewrite_rules(); //reset rewrite rules to open the URL as follows
+    //flush_rewrite_rules(); //r    eset rewrite rules to open the URL as follows
 }
 
 //регистрируем новый тип поста для хранения шаблонов форм
@@ -27,7 +27,7 @@ function add_post_type_form_tmpl_s() {
     );
     $args = array(
         'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'author', 'comments', 'custom-fields', 'page-attributes', 'post-formats', ),
+        'supports'            => array( 'title', 'editor', 'author', /*'comments', 'custom-fields', 'page-attributes', 'post-formats',*/ ),
        // 'taxonomies'          => array('form_tag_s'),//'messages' ),
         'hierarchical'        => false,
         'public'              => false,
@@ -70,9 +70,10 @@ function registration_form_tag_s_taxonomy(){
     register_taxonomy('form_tag_s', array('message_cp'),array(
         'hierarchical' => false,
         'labels' => $labels_taxonomy,
-        'show_ui' => true,
+        'show_ui' => false,
         'query_var' => true,
         'rewrite' => array( 'slug' => 'form_tag_s' ),
+        'show_in_nav_menus' => false,
 
     ));
 
@@ -177,3 +178,11 @@ function cp_callback_print_box($post) {
     echo '<input type = "text" readonly = "readonly" onfocus="this.select();" value = "[form-s id=&quot;'.$post->ID.'&quot;]" >';
 }
 
+//удаление пункта таксономии из подменю Сообщения
+/*
+add_action( 'admin_menu', 'cp_callback_remove_menu_pages' );
+function cp_callback_remove_menu_pages() {
+
+        remove_submenu_page( 'edit.php?post_type=message_cp', 'edit-tags.php?taxonomy=form_tag_s&post_type=message_cp' );
+
+}*/
