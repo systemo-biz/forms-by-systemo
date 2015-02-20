@@ -40,7 +40,7 @@ function cpform_func( $cp_atts, $content){
 		'spam_protect'	=> '',
 	), $cp_atts, 'form-cp' ));
 
-  	if($email_to) $email_to = get_bloginfo('admin_email');;
+  	if($email_to) $email_to = get_bloginfo('admin_email');
 	
   	$spam_protect_html = get_spam_protect_html($spam_protect);
 
