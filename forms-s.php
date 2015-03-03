@@ -1,11 +1,11 @@
 <?php 
 /*
-Plugin Name: Forms for WordPress by CasePress
+Plugin Name: Forms by Systemo
 Description: Calback Form
-Version: 20150302
+Version: 20150302.2
 GitHub Plugin https://github.com/systemo-biz/forms-cp
 GitHub Branch: master
-Author: http://casepress.org
+Author: http://systemo.org
 */
 
 
