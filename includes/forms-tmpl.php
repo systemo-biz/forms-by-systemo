@@ -80,42 +80,12 @@ function registration_form_tag_s_taxonomy(){
 }
 
 //отключение tiny mce
-add_filter( 'admin_footer', 'disable_tiny_mce', 99);
-
-function disable_tiny_mce(){
-
-    global $parent_file, $pagenow, $self;
-
-    if( strpos( $parent_file, 'edit.php' ) !== 0 ){
-        return;
-    }
-
-    $post = array();
-
-    if( isset($_GET['post']) ){
-        $post['id'] = (int)$_GET['post'];
-        $post['type'] = get_post_type( $post['id'] );
-    }elseif( isset($_GET['post_type']) ){
-        $post['type'] = esc_sql( $_GET['post_type'] );
-    }elseif( $parent_file == 'edit.php' && $pagenow == 'post-new.php' ){
-        $post['type'] = 'post';
-    }
-
-    if( (count($post) == 0) || ($post['type'] != 'form_tmpl_s') ){
-        return;
-    }
-
-    echo '  <style type="text/css">
-				#content-tmce, #content-tmce:hover, #qt_content_fullscreen{
-					display:none;
-				}
-				</style>';
-    echo '	<script type="text/javascript">
-			 	jQuery(document).ready(function(){
-					jQuery("#content-tmce").attr("onclick", null);
-			 	});
-			 	</script>';
-
+add_filter( 'user_can_richedit', 'disable_for_cpt' );
+function disable_for_cpt( $default ) {
+    global $post;
+    if ( 'form_tmpl_s' == get_post_type( $post ) )
+        return false;
+    return $default;
 }
 
 //шорткод для вывода шаблонов форм
