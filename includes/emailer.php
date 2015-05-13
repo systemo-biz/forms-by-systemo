@@ -4,8 +4,8 @@ if ( ! wp_next_scheduled('check_new_msg_and_send') ) {
 	wp_schedule_event( time(), 'hourly', 'check_new_msg_and_send' ); // hourly, daily and twicedaily
 }
 
+add_filter( 'wp_mail_content_type', 'set_html_content_type_cp' );
 
-add_action('check_new_msg_and_send', 'check_new_msg_and_send_callback');
 
 function check_new_msg_and_send_callback() {
 	$posts = get_posts('post_type=message_cp&post_status=draft');
@@ -28,9 +28,10 @@ function check_new_msg_and_send_callback() {
 
 
 }
+add_action('check_new_msg_and_send', 'check_new_msg_and_send_callback');
 
+remove_filter( 'wp_mail_content_type', 'set_html_content_type_cp' );
 
-add_filter( 'wp_mail_content_type', 'set_html_content_type_cp' );
 function set_html_content_type_cp() {
 	return 'text/html';
 }
