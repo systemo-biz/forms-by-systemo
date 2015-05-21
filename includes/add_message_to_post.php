@@ -10,6 +10,7 @@ function add_message_to_posts(){
 	$cp_post = array(
 		'post_title' => $meta_data_form['name_form'],
 		'post_type' => 'message_cp',
+        'post_status'   => 'publish',
 		'post_content' => print_r($data_form, true),
 		'post_author' => 1,
 		);
@@ -27,7 +28,8 @@ function add_message_to_posts(){
 	foreach($meta_data_form as $key => $value):
 		add_post_meta($post_id, 'meta_' . $key, $value);
 	endforeach;
-	$content_data = null;
+    
+	$content_data = '';
 	//Шаблон уведомления
 	$notice_template_data=get_post_meta($template_post_id,'notice_template', true);
 	foreach($data_form as $key => $value):
@@ -44,7 +46,7 @@ function add_message_to_posts(){
     //Заполнение по шаблону уведомления
     if(preg_match_all('|\[\[(.+)\]\]|isU',$notice_template_data,$arr)){
 		for ($i=0; $i < count($arr[0]) ; $i++) { 
-			$notice_template_data=str_replace($arr[0][i], get_post_meta($post_id,$arr[1][i],true), $notice_template_data);
+			$notice_template_data=str_replace($arr[0][$i], get_post_meta($post_id,$arr[1][$i],true), $notice_template_data);
 		}
 	}
 	$content_data.=$notice_template_data;

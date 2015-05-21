@@ -132,19 +132,8 @@ function template_meta_boxes() {
 add_action( 'add_meta_boxes', 'template_meta_boxes');
  
 function form_template_print_box($post) {
-    $content='[form-cp spam_protect=1]
+    $content= get_form_template_default();
  
-[input-cp type=text name="name" placeholder="Имя" meta="Имя"]
- 
-[input-cp type=text name="tel" placeholder="Телефон" meta="Телефон"]
- 
-[input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта"]
- 
-[textarea-cp placeholder=Комментарий name="comment" meta="Комментарий"]
- 
-[input-cp type=submit class="btn btn-success" value="Отправить" name="submit"]
- 
-[/form-cp]';
 $args = array('media_buttons' => 0);
 if($post->post_content==''){
     wp_editor($content,'content',$args);
@@ -155,10 +144,8 @@ if($post->post_content==''){
 }
 
 function notice_template_print_box($post){
-    $content='[[name]]
-[[tel]]
-[[email]]
-[[comment]]';
+    $content= get_notify_template_default();
+    
     $args = array('media_buttons' => 0);
     if(get_post_meta($post->ID,'notice_template',true)==''){
         wp_editor($content,'notice_template',$args);
@@ -180,6 +167,52 @@ function save_form_tmpl_s_content($post_id){
 add_action( 'save_post_form_tmpl_s', 'save_form_tmpl_s_content' );
 
 
+/**
+ * Get default  form for new template
+ * @return HTML and shortcodes for template form
+ */
+function get_notify_template_default(){
+    ob_start();
+    ?>
+Имя: [[name]]
+Телефон: [[tel]]
+Электропочта: [[email]]
+Комментарий:
+[[comment]]
+<?php
+    // Get HTML and return
+   $html = ob_get_contents(); 
+   ob_end_clean(); 
+   return $html; 
+}
+
+
+/**
+ * Get default  form for new template
+ * @return HTML and shortcodes for template form
+ */
+function get_form_template_default(){
+    ob_start();
+    ?>
+[form-cp name_form='Пример формы' spam_protect=1]
+ 
+[input-cp type=text name="name" placeholder="Имя" meta="Имя" class="form-control"]
+ 
+[input-cp type=text name="tel" placeholder="Телефон" meta="Телефон" class="form-control"]
+ 
+[input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта" class="form-control"]
+ 
+[textarea-cp placeholder="Комментарий" name="comment" meta="Комментарий" class="form-control"]
+ 
+[input-cp type="submit" class="btn btn-success" value="Отправить" name="submit"]
+ 
+[/form-cp]
+<?php
+    // Get HTML and return
+   $html = ob_get_contents(); 
+   ob_end_clean(); 
+   return $html; 
+}
 
 //удаление пункта таксономии из подменю Сообщения
 /*
