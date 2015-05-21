@@ -2,7 +2,7 @@
 /*
 Plugin Name: Forms by Systemo
 Description: Calback Form
-Version: 20150522
+Version: 20150522.2
 GitHub Plugin https://github.com/systemo-biz/forms-cp
 GitHub Branch: master
 Author: http://systemo.org
