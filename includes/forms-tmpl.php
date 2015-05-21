@@ -1,5 +1,6 @@
 <?php
-
+//Шорткод для вывода шаблонов форм
+include_once('shortcodes/form-s.php');
 
 function cp_callback_activation() { //hook for components that require activation
     add_post_type_form_tmpl_s();
@@ -27,7 +28,7 @@ function add_post_type_form_tmpl_s() {
     );
     $args = array(
         'labels'              => $labels,
-        'supports'            => array( 'title', 'editor', 'author', /*'comments', 'custom-fields', 'page-attributes', 'post-formats',*/ ),
+        'supports'            => array( 'title','author'/*'comments', 'custom-fields', 'page-attributes', 'post-formats',*/ ),
        // 'taxonomies'          => array('form_tag_s'),//'messages' ),
         'hierarchical'        => false,
         'public'              => false,
@@ -45,7 +46,13 @@ function add_post_type_form_tmpl_s() {
     );
     register_post_type( 'form_tmpl_s', $args );
 }
-
+//удаление уведомлений при добавлении шаблонов
+add_filter( 'post_updated_messages', 'delete_notice' ); 
+function delete_notice( $messages ) {
+    global $post, $post_ID;
+    $messages['form_tmpl_s'] = array(0 => '',1 => '',2 => '',3 => '',4 => '',5 => '',6 => '',7 => '',8 => '',9 => '',10 => '');
+    return $messages;
+}
 //регистрация таксономий для шаблонов форм
 function registration_form_tag_s_taxonomy(){
 
@@ -87,37 +94,6 @@ function disable_for_cpt( $default ) {
         return false;
     return $default;
 }
-
-//шорткод для вывода шаблонов форм
-add_shortcode('form-s', 'form_s_shortcode' );
-
-function form_s_shortcode( $atts ){
-
-    if ( empty($atts) ) return;
-    ob_start();
-    extract( shortcode_atts( array(
-        'id' => ''
-    ), $atts ) );
-
-    $post = get_post($id);
-
-    if ( is_object($post) && $post->post_type == 'form_tmpl_s'){
-
-        $post_id_for_taxonomy = $post->post_title;
-        $GLOBALS['post_id_for_taxonomy'] = $post_id_for_taxonomy;
-        echo do_shortcode($post->post_content);
-
-    }else{
-        echo 'указан неверный ID шаблона формы';
-    }
-
-    $ret = ob_get_contents();
-    ob_end_clean();
-    return $ret;
-
-}
-
-
 //создание колонки для вставки кода в админке и удаление лишних колонок
 add_filter('manage_edit-form_tmpl_s_columns', 'add_cp_callback_views_column', 4);
 function add_cp_callback_views_column( $columns ){
@@ -147,6 +123,63 @@ add_action( 'add_meta_boxes', 'cp_callback_meta_boxes' );
 function cp_callback_print_box($post) {
     echo '<input type = "text" readonly = "readonly" onfocus="this.select();" value = "[form-s id=&quot;'.$post->ID.'&quot;]" >';
 }
+
+function template_meta_boxes() {
+    add_meta_box('form_template', 'Шаблон формы', 'form_template_print_box', 'form_tmpl_s', 'normal', 'high');
+    add_meta_box('notice_template','Шаблон уведомления','notice_template_print_box','form_tmpl_s','normal','high');
+}
+ 
+add_action( 'add_meta_boxes', 'template_meta_boxes');
+ 
+function form_template_print_box($post) {
+    $content='[form-cp spam_protect=1]
+ 
+[input-cp type=text name="name" placeholder="Имя" meta="Имя"]
+ 
+[input-cp type=text name="tel" placeholder="Телефон" meta="Телефон"]
+ 
+[input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта"]
+ 
+[textarea-cp placeholder=Комментарий name="comment" meta="Комментарий"]
+ 
+[input-cp type=submit class="btn btn-success" value="Отправить" name="submit"]
+ 
+[/form-cp]';
+$args = array('media_buttons' => 0);
+if($post->post_content==''){
+    wp_editor($content,'content',$args);
+}
+    else{
+        wp_editor($post->post_content,'content',$args);
+    }
+}
+
+function notice_template_print_box($post){
+    $content='[[name]]
+[[tel]]
+[[email]]
+[[comment]]';
+    $args = array('media_buttons' => 0);
+    if(get_post_meta($post->ID,'notice_template',true)==''){
+        wp_editor($content,'notice_template',$args);
+    }
+    else{
+        wp_editor(get_post_meta($post->ID,'notice_template',true),'notice_template',$args);
+    }
+    $emails.='<br><label>Адреса: <input type="text" name="emails" value="'. get_post_meta($post->ID,'emails',true) .'" /></label> ';
+    echo $emails;
+}
+
+function save_form_tmpl_s_content($post_id){
+        update_post_meta($post_id, 'notice_template', $_REQUEST['notice_template']);
+        update_post_meta($post_id, 'emails', esc_attr($_POST['emails']));
+        remove_action( 'save_post_form_tmpl_s', 'save_form_tmpl_s_content' );
+        wp_update_post( array( 'ID' => $post_id, 'post_content' => $_REQUEST['content']));
+        add_action( 'save_post_form_tmpl_s', 'save_form_tmpl_s_content' );
+}
+add_action( 'save_post_form_tmpl_s', 'save_form_tmpl_s_content' );
+
+
 
 //удаление пункта таксономии из подменю Сообщения
 /*
