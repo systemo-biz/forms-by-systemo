@@ -19,7 +19,7 @@ form_name='Имя формы' - имя формы, которое затем и�
 # Примеры
 ## Пример #1 - Простая форма и метод GET
 
-[form-cp method="GET"]
+[form-cp method="GET" id="myform"]
 
 [input-cp type=text label=text name="text"]
 
@@ -30,7 +30,7 @@ form_name='Имя формы' - имя формы, которое затем и�
 
 ## Пример #2 - форма обратной связи
 
-[form-cp name_form='Сайт под ключ - заявка' spam_protect=1]
+[form-cp name_form='Сайт под ключ - заявка' spam_protect=1 id="myform"]
 
 [input-cp type=text name="name" placeholder="Имя" meta="Имя"]
 
