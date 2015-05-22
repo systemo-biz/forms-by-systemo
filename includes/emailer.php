@@ -12,12 +12,21 @@ function check_new_msg_and_send_callback() {
     $posts = get_posts(array(
             'post_type' => 'message_cp',
             'meta_query' => array(
+                'relation' => 'OR',
+                array(
                     'key' => 'email_send',
                     'value' => '2',
-                    'meta_compare' => '!=',
-                    )    
+                    'compare' => '!=',
+                    ),
+                array(
+                    'key' => 'email_send',
+                    'compare' => 'NOT EXISTS',
+                    )
+                )
             )
-    );    
+    );
+    
+    //error_log('test: ' . print_r($posts, true));
     
 	foreach ($posts as $msg) {
 
