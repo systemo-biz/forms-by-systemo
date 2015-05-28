@@ -1,15 +1,12 @@
 <?php 
 /*
 Plugin Name: Forms by Systemo
-Description: Делает формы и хранит сообщения отправляемые с сайта. Может отправлять уведомления на почту по заданному шаблону.
-Version: 20150522.4
+Description: Calback Form
+Version: 20150522.3
 GitHub Plugin https://github.com/systemo-biz/forms-cp
 GitHub Branch: master
 Author: http://systemo.org
 */
-
-
-
  include_once('includes/emailer.php');
  include_once('includes/spam_protect.php');
  include_once('includes/add_message_to_post.php');
