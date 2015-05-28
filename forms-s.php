@@ -83,7 +83,7 @@ function custom_message_cp_column( $column, $post_id ) {
     }
 }
 
- add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' );
+ add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' ); 
  function wpb_adding_scripts() {
 //wp_register_script('jquerymask', plugins_url('js/jquery.mask.min.js', __FILE__), array('jquery'),'1.1', true);
 //wp_enqueue_script('jquerymask');
