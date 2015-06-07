@@ -1,12 +1,23 @@
 <?php 
 /*
-Plugin Name: Forms by Systemo
-Description: Calback Form
-Version: 20150522.3
-GitHub Plugin https://github.com/systemo-biz/forms-cp
-GitHub Branch: master
-Author: http://systemo.org
+* @wordpress-plugin
+* Plugin Name:       Forms by Systemo
+* Description:       Forms for WordPress. With save data to post and send to email.
+* Version:           1.20150607
+* GitHub Plugin      https://github.com/systemo-biz/forms-cp
+* GitHub Branch:     master
+* Author:            http://systemo.org
+* Plugin URI:        https://github.com/systemo-biz/forms-cp
+* Version:           1.0.0
+* Author:            Systemo
+* Author URI:        http://systemo.biz
+* License:           GPL-2.0+
+* License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+* Text Domain:       forms-s
+* Domain Path:       /languages
 */
+
+
  include_once('includes/emailer.php');
  include_once('includes/spam_protect.php');
  include_once('includes/add_message_to_post.php');
