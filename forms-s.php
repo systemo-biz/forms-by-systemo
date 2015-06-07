@@ -3,7 +3,7 @@
 * @wordpress-plugin
 * Plugin Name:       Forms by Systemo
 * Description:       Forms for WordPress. With save data to post and send to email.
-* Version:           20150607
+* Version:           20150607.2
 * GitHub Plugin      https://github.com/systemo-biz/forms-cp
 * GitHub Branch:     master
 * Author:            Systemo
@@ -11,41 +11,45 @@
 * Author URI:        http://systemo.biz
 * License:           GPL-2.0+
 * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
-* Text Domain:       forms-s
+* Text Domain:       forms_s
 * Domain Path:       /languages
 */
 
 
- include_once('includes/emailer.php');
- include_once('includes/spam_protect.php');
- include_once('includes/add_message_to_post.php');
+include_once('includes/emailer.php');
+include_once('includes/spam_protect.php');
+include_once('includes/add_message_to_post.php');
+
 define ("forms_tmpl_include", 1);   // включить forms-tmpls.php = 1
+
 if (defined ("forms_tmpl_include") && forms_tmpl_include == 1) {
 	include_once('includes/forms-tmpl.php');
 	add_action('init', 'cp_callback_activation'); //активация и регистрация таксономии и типа поста для хранения шаблонов форм
 	register_activation_hook(__FILE__, 'cp_callback_activation');
 }
+
 //Шорткоды
 include_once('includes/shortcodes/form-cp.php');
 include_once('includes/shortcodes/input-cp.php');
 include_once('includes/shortcodes/textarea-cp.php');
+
 //регистрируем новый тип поста
 add_action( 'init', 'form_message_add_post_type_cp' );
 function form_message_add_post_type_cp() {
 	$labels = array(
-		'name'                => _x( 'Сообщения', 'Post Type General Name', 'text_domain' ),
-		'singular_name'       => _x( 'Сообщение', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'           => __( 'Сообщения', 'text_domain' ),
-		'parent_item_colon'   => __( 'Parent Item:', 'text_domain' ),
-		'all_items'           => __( 'Все сообщения', 'text_domain' ),
-		'view_item'           => __( 'View Item', 'text_domain' ),
-		'add_new_item'        => __( 'Добавить сообщение', 'text_domain' ),
-		'add_new'             => __( 'Добавить сообщение', 'text_domain' ),
-		'edit_item'           => __( 'Edit Item', 'text_domain' ),
-		'update_item'         => __( 'Update Item', 'text_domain' ),
-		'search_items'        => __( 'Search Item', 'text_domain' ),
-		'not_found'           => __( 'Not found', 'text_domain' ),
-		'not_found_in_trash'  => __( 'Not found in Trash', 'text_domain' ),
+		'name'                => _x( 'Messages', 'Post Type General Name', 'forms_s' ),
+		'singular_name'       => _x( 'Message', 'Post Type Singular Name', 'forms_s' ),
+		'menu_name'           => __( 'Messages', 'forms_s' ),
+		'parent_item_colon'   => __( 'Parent Item:', 'forms_s' ),
+		'all_items'           => __( 'All messages', 'forms_s' ),
+		'view_item'           => __( 'View Item', 'forms_s' ),
+		'add_new_item'        => __( 'Add message', 'forms_s' ),
+		'add_new'             => __( 'Add message', 'forms_s' ),
+		'edit_item'           => __( 'Edit Item', 'forms_s' ),
+		'update_item'         => __( 'Update Item', 'forms_s' ),
+		'search_items'        => __( 'Search Item', 'forms_s' ),
+		'not_found'           => __( 'Not found', 'forms_s' ),
+		'not_found_in_trash'  => __( 'Not found in Trash', 'forms_s' ),
 	);
 	$args = array(
 		'labels'              => $labels,
@@ -75,7 +79,7 @@ add_filter( 'manage_edit-message_cp_columns', 'set_custom_edit_message_cp_column
 add_action( 'manage_message_cp_posts_custom_column' , 'custom_message_cp_column',1,2);
 
 function set_custom_edit_message_cp_columns($columns) {
-    $columns['label'] = __( 'Метка отправки', '' );
+    $columns['label'] = __( 'Send tag', 'forms_s' );
     return $columns;
 }
 

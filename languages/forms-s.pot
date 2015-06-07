@@ -1,0 +1,186 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Forms by Systemo\n"
+"POT-Creation-Date: 2015-06-07 12:43+0500\n"
+"PO-Revision-Date: 2015-06-07 12:24+0500\n"
+"Last-Translator: Anatoly <a.yumashev@gmail.com>\n"
+"Language-Team: Anatoly <a.yumashev@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: forms-s.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: forms-s.php:40
+msgctxt "Post Type General Name"
+msgid "Messages"
+msgstr ""
+
+#: forms-s.php:41
+msgctxt "Post Type Singular Name"
+msgid "Message"
+msgstr ""
+
+#: forms-s.php:42
+msgid "Messages"
+msgstr ""
+
+#: forms-s.php:43 includes/forms-tmpl.php:18
+msgid "Parent Item:"
+msgstr ""
+
+#: forms-s.php:44
+msgid "All messages"
+msgstr ""
+
+#: forms-s.php:45 includes/forms-tmpl.php:20
+msgid "View Item"
+msgstr ""
+
+#: forms-s.php:46 forms-s.php:47
+msgid "Add message"
+msgstr ""
+
+#: forms-s.php:48 includes/forms-tmpl.php:23
+msgid "Edit Item"
+msgstr ""
+
+#: forms-s.php:49 includes/forms-tmpl.php:24
+msgid "Update Item"
+msgstr ""
+
+#: forms-s.php:50 includes/forms-tmpl.php:25
+msgid "Search Item"
+msgstr ""
+
+#: forms-s.php:51 includes/forms-tmpl.php:26
+msgid "Not found"
+msgstr ""
+
+#: forms-s.php:52 includes/forms-tmpl.php:27
+msgid "Not found in Trash"
+msgstr ""
+
+#: forms-s.php:82
+msgid "Send tag"
+msgstr ""
+
+#: includes/forms-tmpl.php:15
+msgctxt "Post Type General Name"
+msgid "Form templates"
+msgstr ""
+
+#: includes/forms-tmpl.php:16
+msgctxt "Post Type Singular Name"
+msgid "Form template"
+msgstr ""
+
+#: includes/forms-tmpl.php:17
+msgid "Form templates"
+msgstr ""
+
+#: includes/forms-tmpl.php:21
+msgid "Add New Item"
+msgstr ""
+
+#: includes/forms-tmpl.php:22
+msgid "Add New"
+msgstr ""
+
+#: includes/forms-tmpl.php:60
+msgctxt "taxonomy general name"
+msgid "form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:61
+msgctxt "taxonomy singular name"
+msgid "form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:62
+msgid "Search form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:63
+msgid "Popular form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:64
+msgid "All form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:65
+msgid "Edit form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:66
+msgid "Update form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:67
+msgid "Add form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:68
+msgid "New form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:69
+msgid "Separate form_tag_s with commas"
+msgstr ""
+
+#: includes/forms-tmpl.php:70
+msgid "Add or remove form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:71
+msgid "Choose from the most used form_tag_s"
+msgstr ""
+
+#: includes/forms-tmpl.php:72
+msgid "form-tag-s"
+msgstr ""
+
+#: includes/forms-tmpl.php:99 includes/forms-tmpl.php:117
+msgid "Code paste"
+msgstr ""
+
+#: includes/forms-tmpl.php:127
+msgid "Form template"
+msgstr ""
+
+#: includes/forms-tmpl.php:128
+msgid "Notify template"
+msgstr ""
+
+#: includes/forms-tmpl.php:155
+msgid "Addresses"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Forms by Systemo"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/systemo-biz/forms-cp"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Forms for WordPress. With save data to post and send to email."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Systemo"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://systemo.biz"
+msgstr ""
