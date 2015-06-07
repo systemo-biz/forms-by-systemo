@@ -3,11 +3,11 @@
 * @wordpress-plugin
 * Plugin Name:       Forms by Systemo
 * Description:       Forms for WordPress. With save data to post and send to email.
-* Version:           20150607.2
-* GitHub Plugin      https://github.com/systemo-biz/forms-cp
+* Version:           20150607.3
+* GitHub Plugin      https://github.com/systemo-biz/forms-s
 * GitHub Branch:     master
 * Author:            Systemo
-* Plugin URI:        https://github.com/systemo-biz/forms-cp
+* Plugin URI:        https://github.com/systemo-biz/forms-s
 * Author URI:        http://systemo.biz
 * License:           GPL-2.0+
 * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
