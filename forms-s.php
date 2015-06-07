@@ -1,6 +1,5 @@
 <?php 
 /*
-@wordpress-plugin
 Plugin Name:       Forms by Systemo
 Description:       Forms for WordPress. With save data to post and send to email.
 Author:            Systemo
@@ -15,9 +14,11 @@ GitHub Branch: master
 Version:           20150607.4
 */
 
+
 function plugins_loaded_textdomain_forms_s() {
     load_plugin_textdomain( 'forms_s', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
 } add_action('plugins_loaded', 'plugins_loaded_textdomain_forms_s');
+
 
 include_once('includes/emailer.php');
 include_once('includes/spam_protect.php');
