@@ -11,7 +11,7 @@ Text Domain:       forms_s
 Domain Path:       /languages
 GitHub Plugin URI: https://github.com/systemo-biz/forms-s
 GitHub Branch: master
-Version:           20150607.4
+Version:           20150609
 */
 
 
