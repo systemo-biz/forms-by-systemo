@@ -1,8 +1,11 @@
 Forms for WordPress by Systemo
 =========================
 
-Плагин позволяет генерировать форму за счет шорткодов. Сохраняя данные в посты типа Сообщение и отправляя на эл почту.
-
+Forms for contact page, CTA and landing page based on WordPress. Insert form as shortcode.
+Create form template as post type. Save data as post and send to email.
+---
+Формы для страниц контактов, CTA и посадочных страниц в WordPress. Вставляет формы как шорткод.
+Создаем шаблоны форм как тип поста. Сохраняет данные как пост и отправляет на эл.почту.
 
 # Шорткоды
 ## [form_cp]
