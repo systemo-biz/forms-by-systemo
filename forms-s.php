@@ -1,6 +1,6 @@
 <?php 
 /*
-Plugin Name:       Forms by Systemo
+Plugin Name:       Forms by Systemo (beta)
 Description:       Forms for WordPress. With save data to post and send to email.
 Author:            Systemo
 Plugin URI:        https://github.com/systemo-biz/forms-s
@@ -11,7 +11,7 @@ Text Domain:       forms_s
 Domain Path:       /languages
 GitHub Plugin URI: https://github.com/systemo-biz/forms-s
 GitHub Branch: master
-Version:           20150609.2
+Version:           0.20150613
 */
 
 
