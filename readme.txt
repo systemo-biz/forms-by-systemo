@@ -2,7 +2,7 @@
 Contributors: casepress
 Tags: forms, form, callback, feedback, contact form, contact forms, custom form, custom forms, form, form administration, form builder, form creation, form creator, form manager, forms, forms builder, forms creation, forms creator, forms manager
 Requires at least: 3.0.0
-Tested up to: 4.0.0
+Tested up to: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,10 +20,10 @@ Forms for contact page, CTA and landing page based on WordPress.
 
 
 = Website =
-https://github.com/systemo-biz/forms-s
+https://github.com/systemo-biz/forms-by-systemo
 
 = Documentation =
-https://github.com/systemo-biz/forms-s/wiki
+https://github.com/systemo-biz/forms-by-systemo/wiki
 
 == Installation ==
 

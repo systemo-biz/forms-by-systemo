@@ -10,8 +10,8 @@ License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 Text Domain:       forms_s
 Domain Path:       /languages
 GitHub Plugin URI: https://github.com/systemo-biz/forms-s
-GitHub Branch: master
-Version:           0.20150613
+GitHub Branch:       master
+Version:                   20150825
 */
 
 
