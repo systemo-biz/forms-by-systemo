@@ -16,7 +16,6 @@ function add_post_type_form_tmpl_s() {
         'singular_name'       => _x( 'Form template', 'Post Type Singular Name', 'forms_s' ),
         'menu_name'           => __( 'Form templates', 'forms_s' ),
         'parent_item_colon'   => __( 'Parent Item:', 'forms_s' ),
-        //'all_items'           => __( 'All Items', 'forms_s' ),
         'view_item'           => __( 'View Item', 'forms_s' ),
         'add_new_item'        => __( 'Add New Item', 'forms_s' ),
         'add_new'             => __( 'Add New', 'forms_s' ),
@@ -28,8 +27,7 @@ function add_post_type_form_tmpl_s() {
     );
     $args = array(
         'labels'              => $labels,
-        'supports'            => array( 'title','author'/*'comments', 'custom-fields', 'page-attributes', 'post-formats',*/ ),
-       // 'taxonomies'          => array('form_tag_s'),//'messages' ),
+        'supports'            => array( 'title','author'),
         'hierarchical'        => false,
         'public'              => false,
         'show_ui'             => true,
@@ -46,8 +44,9 @@ function add_post_type_form_tmpl_s() {
     );
     register_post_type( 'form_tmpl_s', $args );
 }
+
 //удаление уведомлений при добавлении шаблонов
-add_filter( 'post_updated_messages', 'delete_notice' ); 
+add_filter( 'post_updated_messages', 'delete_notice' );
 function delete_notice( $messages ) {
     global $post, $post_ID;
     $messages['form_tmpl_s'] = array(0 => '',1 => '',2 => '',3 => '',4 => '',5 => '',6 => '',7 => '',8 => '',9 => '',10 => '');
@@ -127,12 +126,12 @@ function template_meta_boxes() {
     add_meta_box('form_template', __('Form template', 'forms_s'), 'form_template_print_box', 'form_tmpl_s', 'normal', 'high');
     add_meta_box('notice_template', __('Notify template', 'forms_s'),'notice_template_print_box','form_tmpl_s','normal','high');
 }
- 
+
 add_action( 'add_meta_boxes', 'template_meta_boxes');
- 
+
 function form_template_print_box($post) {
     $content= get_form_template_default();
- 
+
 $args = array('media_buttons' => 0);
 if($post->post_content==''){
     wp_editor($content,'content',$args);
@@ -144,7 +143,7 @@ if($post->post_content==''){
 
 function notice_template_print_box($post){
     $content= get_notify_template_default();
-    
+
     $args = array('media_buttons' => 0);
     if(get_post_meta($post->ID,'notice_template',true)==''){
         wp_editor($content,'notice_template',$args);
@@ -180,9 +179,9 @@ function get_notify_template_default(){
 [[comment]]
 <?php
     // Get HTML and return
-   $html = ob_get_contents(); 
-   ob_end_clean(); 
-   return $html; 
+   $html = ob_get_contents();
+   ob_end_clean();
+   return $html;
 }
 
 
@@ -194,23 +193,28 @@ function get_form_template_default(){
     ob_start();
     ?>
 [form-cp name_form='Пример формы' spam_protect=1]
- 
-[input-cp type=text name="name" placeholder="Имя" meta="Имя" class="form-control"]
- 
-[input-cp type=text name="tel" placeholder="Телефон" meta="Телефон" class="form-control"]
- 
-[input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта" class="form-control"]
- 
+<div class="row">
+  <div class="col-md-4">
+    [input-cp type=text name="name" placeholder="Имя" meta="Имя" class="form-control"]
+  </div>
+  <div class="col-md-4">
+    [input-cp type=text name="tel" placeholder="Телефон" meta="Телефон" class="form-control"]
+  </div>
+  <div class="col-md-4">
+    [input-cp type=email name="email" placeholder="Электронная почта" required="true" meta="Электронная почта" class="form-control"]
+  </div>
+</div>
+<br>
 [textarea-cp placeholder="Комментарий" name="comment" meta="Комментарий" class="form-control"]
- 
+<br>
 [input-cp type="submit" class="btn btn-success" value="Отправить" name="submit"]
- 
+
 [/form-cp]
 <?php
     // Get HTML and return
-   $html = ob_get_contents(); 
-   ob_end_clean(); 
-   return $html; 
+   $html = ob_get_contents();
+   ob_end_clean();
+   return $html;
 }
 
 //удаление пункта таксономии из подменю Сообщения
