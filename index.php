@@ -1,17 +1,15 @@
 <?php 
 /*
 Plugin Name:       Forms by Systemo (beta)
-Description:       Forms for WordPress. With save data to post and send to email.
-Author:            Systemo
-Plugin URI:        https://github.com/systemo-biz/forms-s
-Author URI:        http://systemo.biz
-License:           GPL-2.0+
+Description:          Forms for WordPress. With save data to post and send to email.
+Author:                 Systemo
+Plugin URI:          https://github.com/systemo-biz/forms-s
+Author URI:         http://systemo.biz
+License:              GPL-2.0+
 License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
-Text Domain:       forms_s
-Domain Path:       /languages
-GitHub Plugin URI: https://github.com/systemo-biz/forms-s
-GitHub Branch:       master
-Version:                   20150825
+Text Domain:      forms_s
+Domain Path:      /languages
+Version:               20150825
 */
 
 
