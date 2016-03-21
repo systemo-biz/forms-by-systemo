@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 Plugin Name:       Forms by Systemo (beta)
 Description:          Forms for WordPress. With save data to post and send to email.
@@ -20,6 +20,7 @@ function plugins_loaded_textdomain_forms_s() {
 
 include_once('includes/emailer.php');
 include_once('includes/spam_protect.php');
+include_once('includes/save_utm.php');
 include_once('includes/add_message_to_post.php');
 
 define ("forms_tmpl_include", 1);   // включить forms-tmpls.php = 1
@@ -73,7 +74,7 @@ function form_message_add_post_type_cp() {
 	if (defined ("forms_tmpl_include") && forms_tmpl_include == 1){
 		$args['taxonomies']= array( 'form_tag_s' );
 	}
-	
+
 	register_post_type( 'message_cp', $args );
 }
 //Метка об отправке на почту
@@ -95,7 +96,7 @@ function custom_message_cp_column( $column, $post_id ) {
     }
 }
 
- add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' ); 
+ add_action( 'wp_enqueue_scripts', 'wpb_adding_scripts' );
  function wpb_adding_scripts() {
 //wp_register_script('jquerymask', plugins_url('js/jquery.mask.min.js', __FILE__), array('jquery'),'1.1', true);
 //wp_enqueue_script('jquerymask');

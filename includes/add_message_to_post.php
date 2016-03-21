@@ -1,8 +1,6 @@
 <?php
 add_action('init', 'add_message_to_posts');
 function add_message_to_posts(){
-	//записываем UTM метки в COOKIE если они есть
-	set_cookie_s($_GET);
 	// проверяем пустая ли data_cp
 	if(empty($_REQUEST['data_form_cp'])) return;
 	$data_form = $_REQUEST['data_form_cp']; // если не пустая то записываем значения для  проверки существованя
@@ -26,15 +24,11 @@ function add_message_to_posts(){
 		wp_set_object_terms($post_id, $parent_post_name, 'form_tag_s', true);
 		$template_post_id= intval($_REQUEST['meta_data_form_cp']['template_post_id']);
 	}
+
 	//Записываем меты
 	foreach($meta_data_form as $key => $value):
 		add_post_meta($post_id, 'meta_' . $key, $value);
 	endforeach;
-
-	//записываем utm метки в мету поста если это включенно в настройках шаблона
-	if (get_post_meta($template_post_id, 's_utm_m', 1) == 1) {
-		set_meta_utm_s($_COOKIE, $post_id);
-	}
 
 	$content_data = '';
 	//Шаблон уведомления
@@ -63,32 +57,4 @@ function add_message_to_posts(){
 		'post_content' => $content_data,
 		);
 	wp_update_post( $post_data );
-}
-// функция записи UTM меток в COOKIE
-function set_cookie_s($get_s) {
-	foreach ($get_s as $key => $value) {
-		$utm_s = strpos($key, 'utm');
-		$gclid_s = strpos($key, 'gclid');
-		if (!($utm_s === false)) {
-		    setcookie( $key, $value, time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
-		}
-		if (!($gclid_s === false)) {
-		    setcookie( $key, $value, time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
-		}
-	}
-	return;
-}
-// функция записи UTM меток в мету поста
-function set_meta_utm_s($cookie_s, $post_id) {
-	foreach ($cookie_s as $key => $value) {
-		$utm_s = strpos($key, 'utm');
-		$gclid_s = strpos($key, 'gclid');
-		if (!($utm_s === false)) {
-		    add_post_meta($post_id, 'meta_' . $key, $value);
-		}
-		if (!($gclid_s === false)) {
-		    add_post_meta($post_id, 'meta_' . $key, $value);
-		}
-	}
-	return;
 }
