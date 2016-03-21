@@ -89,7 +89,7 @@ function set_meta_utm_s($cookie_s, $post_id) {
 		}
 		if (!($gclid_s === false)) {
 			// хук для gclid
-			$s_value_gclid = apply_filters( 's_value_gclid', $value, $key );
+			$s_value_gclid = apply_filters( 's_value_gclid', $value );
 		    add_post_meta($post_id, 'meta_' . $key, $s_value_gclid);
 		}
 	}
