@@ -20,7 +20,9 @@ function plugins_loaded_textdomain_forms_s() {
 
 include_once('includes/emailer.php');
 include_once('includes/spam_protect.php');
-include_once('includes/save_utm.php');
+include_once('includes/s_options_tmpl.php'); // мета бокс с опциями шаблона формы
+include_once('includes/save_utm.php'); // сохранение utm меток
+include_once('includes/s_ajax_send.php'); // плагин для отправки формы через Ajax
 include_once('includes/add_message_to_post.php');
 
 define ("forms_tmpl_include", 1);   // включить forms-tmpls.php = 1
