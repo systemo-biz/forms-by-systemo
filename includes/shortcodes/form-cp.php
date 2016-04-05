@@ -25,9 +25,16 @@ function cpform_func( $cp_atts, $content){
   		}
 	}
   	$spam_protect_html = get_spam_protect_html($spam_protect);
+
   	// получаем данные об использовании AJAX в этой форме
   	$s_ajax=get_post_meta($GLOBALS['template_post_id'],'s_ajax',true); //нужно ли использовать ajax
-  	$s_ajax_confirm_mess=get_post_meta($GLOBALS['template_post_id'],'s_ajax_confirm',true); // сообщение о успешной отправке.
+
+  	$s_ajax_confirm_mess = "Сообщение отправлено."; /// стандартное сообщение об успешной отправке
+
+  	if (get_post_meta($GLOBALS['template_post_id'],'s_ajax_confirm',true) !== '') { // записываем сообщение об успешной отправке из настроек шаблона формы если оно есть.
+  		$s_ajax_confirm_mess = get_post_meta($GLOBALS['template_post_id'],'s_ajax_confirm',true);
+	}
+
  	ob_start();
 
  												//Если в форме нужно использовать Ajax то оборачиваем форму в класс ajax-form-s с id используемого шаблона формы в конце

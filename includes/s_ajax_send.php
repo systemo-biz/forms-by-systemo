@@ -1,7 +1,7 @@
 <?php
 function s_ajax_send_script() {
 	wp_enqueue_script('malsup',
-		'http://malsup.github.com/jquery.form.js',
+		plugin_dir_url(__FILE__).'js/jquery.form.js',
 		array('jquery')
 	);
 }
