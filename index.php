@@ -3,7 +3,7 @@
 Plugin Name:       Forms by Systemo (beta)
 Description:          Forms for WordPress. With save data to post and send to email.
 Author:                 Systemo
-Plugin URI:          https://github.com/systemo-biz/forms-s
+Plugin URI:         https://github.com/systemo-biz/forms-by-systemo
 Author URI:         http://systemo.biz
 License:              GPL-2.0+
 License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
